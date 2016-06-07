@@ -11,8 +11,8 @@ use File::ShareDir ':ALL';
 use DateTime;
 use Ham::Locator;
 use Imager;
-use Math::Trig;
 use POSIX;
+use Math::Trig;
 
 =head1 NAME
 
@@ -186,6 +186,18 @@ sub new {
 sub dotAtLocator {
     my ($self, $gridLocation, $radius, $colour) = @_;
 
+    my ($x, $y) = $self->locatorToXY($gridLocation);
+
+    my ($r, $g, $b, $a) = $colour->rgba();
+    my $grey = Imager::Color->new(192, 192, 192, $a);
+    $self->{image}->circle(color => $grey, r => $radius, x => $x, y => $y, aa => 1);
+
+    $self->{image}->circle(color => $colour, r => $radius - 1, x => $x, y => $y, aa => 1);
+}
+
+sub locatorToXY {
+    my ($self, $gridLocation) = @_;
+
     $self->{locator}->set_loc($gridLocation);
     my ($latitude, $longitude) = $self->{locator}->loc2latlng;
 
@@ -197,11 +209,7 @@ sub dotAtLocator {
     $y += 90; # 0 .. 180
     $y *= ($self->{height} / 180); # 0 .. height
 
-    my ($r, $g, $b, $a) = $colour->rgba();
-    my $grey = Imager::Color->new(192, 192, 192, $a);
-    $self->{image}->circle(color => $grey, r => $radius, x => $x, y => $y, aa => 1);
-
-    $self->{image}->circle(color => $colour, r => $radius - 1, x => $x, y => $y, aa => 1);
+    return ($x, $y);
 }
 
 sub drawLocatorGrid {
@@ -228,6 +236,34 @@ sub drawLocatorGrid {
                 aa => 1);
         }
     }
+}
+
+# Colour a 2-char grid square (e.g. JO for South-East England) from a heat map, according to the proportion, which is
+# in the range [0.0 .. 1.0]. 0.0 indicates 'no signals in this square'; 1.0 indicates 'all signals in this square'.
+sub heatMapGridSquare {
+    my ($self, $twoCharGridSquare, $proportion) = @_;
+
+    my ($x, $y) = $self->locatorToXY($twoCharGridSquare);
+
+    my $map = $self->{image};
+    my $xinc = $self->{gridx};
+    my $yinc = $self->{gridy};
+
+    my $gX = int($x / $xinc) * $xinc;
+    my $gY = int($y / $yinc) * $yinc;
+
+    # HSV, with SV fixed. H from 0 (red [proportion=0.0]) to 64 (yellow [proportion=1.0)
+    my $h = 64 - int($proportion * 64);
+    my $color = Imager::Color->new(h => $h, s => 40, v => 80);
+    printf ("proportion %3.2f%% h [0..64] $h\n", $proportion * 100);
+
+    my $box = Imager->new(ysize => $yinc, xsize => $xinc);
+    $box = $box->convert(preset => 'addalpha');
+
+    $box->box(color => $color, xmin => 0, ymin => 0, xmax => $xinc - 1, ymax => $yinc - 1, filled => 1);
+
+    $self->{image}->compose(src => $box, tx => $gX + 1, ty => $gY + 1, opacity => 0.5);
+    #$map->box(color => $color, xmin => $gX + 1, ymin => $gY + 1, xmax => $gX + $xinc - 1, ymax => $gY + $yinc - 1, filled => 1);
 }
 
 sub write {
