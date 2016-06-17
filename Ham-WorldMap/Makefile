@@ -19,7 +19,7 @@
 #     MIN_PERL_VERSION => q[5.006]
 #     NAME => q[Ham::WorldMap]
 #     PL_FILES => {  }
-#     PREREQ_PM => { Test::More=>q[0] }
+#     PREREQ_PM => { DateTime=>q[1.28], File::ShareDir=>q[1.102], Ham::Locator=>q[0.1000], Imager=>q[1.005], Math::Trig=>q[1.23], POSIX=>q[1.30], Test::More=>q[0] }
 #     TEST_REQUIRES => {  }
 #     VERSION_FROM => q[lib/Ham/WorldMap.pm]
 #     clean => { FILES=>q[Ham-WorldMap-*] }
@@ -507,6 +507,12 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '    - t' >> META_new.yml
 	$(NOECHO) $(ECHO) '    - inc' >> META_new.yml
 	$(NOECHO) $(ECHO) 'requires:' >> META_new.yml
+	$(NOECHO) $(ECHO) '  DateTime: '\''1.28'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  File::ShareDir: '\''1.102'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Ham::Locator: '\''0.1000'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Imager: '\''1.005'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Math::Trig: '\''1.23'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  POSIX: '\''1.30'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) '  perl: '\''5.006'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'version: '\''0.01'\''' >> META_new.yml
 	-$(NOECHO) $(MV) META_new.yml $(DISTVNAME)/META.yml
@@ -545,6 +551,12 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '      },' >> META_new.json
 	$(NOECHO) $(ECHO) '      "runtime" : {' >> META_new.json
 	$(NOECHO) $(ECHO) '         "requires" : {' >> META_new.json
+	$(NOECHO) $(ECHO) '            "DateTime" : "1.28",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "File::ShareDir" : "1.102",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Ham::Locator" : "0.1000",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Imager" : "1.005",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Math::Trig" : "1.23",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "POSIX" : "1.30",' >> META_new.json
 	$(NOECHO) $(ECHO) '            "perl" : "5.006"' >> META_new.json
 	$(NOECHO) $(ECHO) '         }' >> META_new.json
 	$(NOECHO) $(ECHO) '      }' >> META_new.json
@@ -864,6 +876,12 @@ ppd :
 	$(NOECHO) $(ECHO) '    <AUTHOR>Matt Gumbley &lt;matt.gumbley@devzendo.org&gt;</AUTHOR>' >> Ham-WorldMap.ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> Ham-WorldMap.ppd
 	$(NOECHO) $(ECHO) '        <PERLCORE VERSION="5,006,0,0" />' >> Ham-WorldMap.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DateTime::" VERSION="1.28" />' >> Ham-WorldMap.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="File::ShareDir" VERSION="1.102" />' >> Ham-WorldMap.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Ham::Locator" VERSION="0.1000" />' >> Ham-WorldMap.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Imager::" VERSION="1.005" />' >> Ham-WorldMap.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Math::Trig" VERSION="1.23" />' >> Ham-WorldMap.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="POSIX::" VERSION="1.30" />' >> Ham-WorldMap.ppd
 	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="darwin-thread-multi-2level-5.16" />' >> Ham-WorldMap.ppd
 	$(NOECHO) $(ECHO) '        <CODEBASE HREF="" />' >> Ham-WorldMap.ppd
 	$(NOECHO) $(ECHO) '    </IMPLEMENTATION>' >> Ham-WorldMap.ppd
