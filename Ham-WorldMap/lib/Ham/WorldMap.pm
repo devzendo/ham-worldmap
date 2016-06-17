@@ -19,6 +19,15 @@ Maidenhead locator grid and day/night illumination showing the area of enhanced 
 Also utility methods for adding dots at locator positions or lat/long coords, and filling grid squares with colour
 to provide a 'heat map' of activity from these squares.
 
+A sample map:
+
+=begin HTML
+
+<p><img src="https://bitbucket.org/devzendo/ham-worldmap/raw/default/Ham-WorldMap/example-map.png" width="1920"
+height="1024" alt="Example map"/></p>
+
+=end HTML
+
 =head1 ACKNOWLEDGEMENTS
 
 The map used in this module came from Wikimedia commons:
