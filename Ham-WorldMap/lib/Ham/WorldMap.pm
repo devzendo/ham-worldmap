@@ -66,7 +66,10 @@ To create a map with a station location, grid squares, and night/day boundary:
 
     use Ham::WorldMap;
 
-    my $map = Ham::WorldMap->new();
+    # By default, an OSX-specific font will be used for drawing text. If you're not on OSX, supply the name of a
+    # font file...
+    my $map = Ham::WorldMap->new();  # fine on OSX, uses Lucida Console.
+    my $map = Ham::WorldMap->new('fontFile' => "C:\\Windows\\Fonts\\Arial.ttf");  # Windows, not tested.
 
     # The map now has the world on it.
 
@@ -106,7 +109,12 @@ No functions exported; this has a purely object-oriented module.
 
 =head2 new
 
-The constructor; takes no arguments, returns a blessed hash.
+The constructor; takes a hash of arguments, returns a blessed hash.
+
+Currently the only data in the argument hash is fontFile, the name of a TTF font. This code was written on OSX, and if
+not specified, Lucida Console.ttf will be used; you'll need to specify this on non-OSX.
+
+    my $map = Ham::WorldMap->new('fontFile' => "C:\\Windows\\Fonts\\Arial.ttf");  # Windows, not tested.
 
 Some instance data in the hash that you might find useful: I should probably expose these via methods:
         'height'  => the map image height
@@ -225,6 +233,7 @@ use constant FALSE => 0;
 
 sub new {
     my $class = shift;
+    my %init = @_;
 
     my $mapPngFile = dist_file('Ham-WorldMap', 'grey-map.png');
     die "Cannot locate shared data file $mapPngFile" unless -f $mapPngFile;
@@ -237,8 +246,9 @@ sub new {
 
     my $grey = Imager::Color->new(64, 64, 64);
 
-    # TODO not cross-platform. This is for OSX...
-    my $font = Imager::Font->new(file => "/Library/Fonts/Microsoft/Lucida Console.ttf");
+    my $fontFile = $init{'fontFile'} || "/Library/Fonts/Microsoft/Lucida Console.ttf";
+
+    my $font = Imager::Font->new(file => $fontFile);
 
     my $obj = {
         'height' => $mapImage->getheight(),
