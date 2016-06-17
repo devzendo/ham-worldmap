@@ -23,8 +23,8 @@ A sample map:
 
 =begin HTML
 
-<p><img src="https://bitbucket.org/devzendo/ham-worldmap/raw/default/Ham-WorldMap/example-map.png" width="1920"
-height="1024" alt="Example map"/></p>
+<p><img src="https://bitbucket.org/devzendo/ham-worldmap/raw/default/Ham-WorldMap/example-map.png" width="960"
+height="512" alt="Example map"/></p>
 
 =end HTML
 
