@@ -1,0 +1,9 @@
+syntax: regexp
+target/
+pm_to_blib/
+pm_to_blib
+blib/
+syntax: glob
+*.iml
+Makefile.old
+
