@@ -1,7 +1,5 @@
 package Ham::WorldMap;
 
-#package WorldMap;
-
 use 5.006;
 use strict;
 use warnings;
@@ -18,7 +16,8 @@ use Math::Trig;
 
 Ham::WorldMap - Creates an Imager image containing an equirectangular projection of the world map, with optional
 Maidenhead locator grid and day/night illumination showing the area of enhanced propagation known as the 'grey line'.
-Also utility methods for adding dots at locator positions or lat/long coords.
+Also utility methods for adding dots at locator positions or lat/long coords, and filling grid squares with colour
+to provide a 'heat map' of activity from these squares.
 
 =head1 ACKNOWLEDGEMENTS
 
@@ -26,8 +25,9 @@ The map used in this module came from Wikimedia commons:
 https://commons.wikimedia.org/wiki/File:BlankMap-World6-Equirectangular.svg
 and is in the public domain.
 
-I resized it to have a width of 1920 pixels, shifted it right a little to match other amateur locator maps, took off the
-odd pixels at each side, and exported it as a PNG in InkScape.
+(I resized it to have a width of 1920 pixels, shifted it right a little to match other amateur locator maps, took off
+the odd pixels at each side, and exported it as a PNG in InkScape. The code to do that is in another project that you
+don't need, but that also contains examples of the use of this module: https://bitbucket.org/devzendo/gridmapper )
 
 
 The day/night illumination code is ported from John Walker's Earth and Moon viewer, at
@@ -53,45 +53,103 @@ our $VERSION = '0.01';
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
-
-Perhaps a little code snippet.
+To create a map with a station location, grid squares, and night/day boundary:
 
     use Ham::WorldMap;
 
-    my $foo = Ham::WorldMap->new();
-    ...
+    my $map = Ham::WorldMap->new();
+
+    # The map now has the world on it.
+
+    my $colour = Imager::Color->new(16, 16, 192);
+    my $radius = 20;
+    $map->dotAtLocator("JO01EE", $radius, $colour); # M0CUV is here!
+
+    # World plus dot.
+
+    my $dt = DateTime->new(
+        year       => 2016,
+        month      => 6,
+        day        => 5,
+        hour       => 0,
+        minute     => 0,
+        second     => 0,
+        nanosecond => 0,
+        time_zone  => 'UTC',
+    );
+    $map->drawNightRegions($dt);
+
+    # The world plus dot, with day/night on top.
+
+    $map->drawLocatorGrid();
+
+    # The grid is on top of the world/dot/day/night.
+
+    $map->write("map.png");
+
+
 
 =head1 EXPORT
 
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
+No functions exported; this has a purely object-oriented module.
 
 =head1 SUBROUTINES/METHODS
 
-=head2 function1
+=head2 new
 
-=cut
+The constructor; takes no arguments, returns a blessed hash.
 
-sub function1 {
-}
+Some instance data in the hash that you might find useful: I should probably expose these via methods:
+        'height'  => the map image height
+        'width'   => the map image width
+        'image'   => the Imager image of the map
+        'gridx'   => the width of each grid square
+        'gridy'   => the height of each grid square
 
-=head2 function2
 
-=cut
+=head2 dotAtLocator($self, $gridLocation, $radius, $colour)
 
-sub function2 {
-}
+Takes a grid location at any granularity (e.g. 'JO', 'JO01', 'JO01EE'), a radius in pixels, and an Imager colour, then
+draws that dot.
+
+=head2 locatorToXY($self, $gridLocation) = ($x, $y)
+
+Converts a grid location of any granularity into X,Y coordinates for that location on the map image.
+
+=head2 drawLocatorGrid($self)
+
+Draws the locator grid, large-granularity grid square identifiers (2 character, e.g. JO) on the map image.
+
+=head2 heatMapGridSquare($self, $twoCharGridSquare, $proportion)
+
+Colour a 2-char grid square (e.g. JO for South-East England) from a heat map, according to the proportion, which is
+in the range [0.0 .. 1.0]. 0.0 indicates 'no signals in this square'; 1.0 indicates 'all signals in this square'.
+
+=head2 write($self, $filename)
+
+Writes the map image to a file; e.g. "map.png".
+
+=head2 drawNightRegions($self, $dateTime)
+
+Draw the night regions onto the map, for a given UTC time/date. This is not a fast operation; it's computationally
+heavy.
+
+=head2 createNightRegions($self, $dateTime) = $map;
+Create an Imager image of the day/night boundary, for a given UTC time/date. Does not modify current map image, gives
+back a new one that can be composed transparently onto the main image (you may just want to use drawNightRegions -
+this is a bit 'internal').
+
 
 =head1 AUTHOR
 
-Matt Gumbley, M0CUV C<< <matt.gumbley at devzendo.org> >> @mattgumbley
+Matt Gumbley, M0CUV C<< <devzendo at cpan.org> >>
+@mattgumbley on twitter
 
 =head1 BUGS
 
 Please report any bugs or feature requests to C<bug-ham-worldmap at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Ham-WorldMap>.  I will be notified, and then you'll
-automatically be notified of progress on your bug as I make changes.
+the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Ham-WorldMap>.  I will be notified, and then
+you'll automatically be notified of progress on your bug as I make changes.
 
 
 

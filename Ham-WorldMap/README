@@ -1,15 +1,9 @@
 Ham-WorldMap
 
-The README is used to introduce the module and provide instructions on
-how to install the module, any machine dependencies it may have (for
-example C compilers and installed libraries) and any other information
-that should be provided before the module is installed.
-
-A README file is required for CPAN modules since CPAN extracts the README
-file from a module distribution so that people browsing the archive
-can use it to get an idea of the module's uses. It is usually a good idea
-to provide version information here so that people can decide whether
-fixes for the module are worth downloading.
+Creates an Imager image containing an equirectangular projection of the world map, with optional
+Maidenhead locator grid and day/night illumination showing the area of enhanced propagation known as the 'grey line'.
+Also utility methods for adding dots at locator positions or lat/long coords, and filling grid squares with colour
+to provide a 'heat map' of activity from these squares.
 
 
 INSTALLATION
@@ -43,9 +37,14 @@ You can also look for information at:
         http://search.cpan.org/dist/Ham-WorldMap/
 
 
+EXAMPLE CODE
+
+Please see my gridmapper code, at https://bitbucket.org/devzendo/gridmapper
+This draws maps based on logged data from WSJT-X and from .adif files.
+
 LICENSE AND COPYRIGHT
 
-Copyright (C) 2016 Matt Gumbley
+Copyright (C) 2016 Matt Gumbley, M0CUV
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

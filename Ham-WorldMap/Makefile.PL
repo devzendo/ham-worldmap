@@ -8,7 +8,7 @@ install_share dist => 'share';
 
 WriteMakefile(
     NAME             => 'Ham::WorldMap',
-    AUTHOR           => q{Matt Gumbley <matt.gumbley@devzendo.org>},
+    AUTHOR           => q{Matt Gumbley <devzendo@cpan.org>},
     VERSION_FROM     => 'lib/Ham/WorldMap.pm',
     ABSTRACT_FROM    => 'lib/Ham/WorldMap.pm',
     LICENSE          => 'apache_2_0',
