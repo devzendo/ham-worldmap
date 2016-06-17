@@ -145,6 +145,11 @@ this is a bit 'internal').
 Matt Gumbley, M0CUV C<< <devzendo at cpan.org> >>
 @mattgumbley on twitter
 
+=head1 SOURCE CODE
+
+The Mercurial source repository for this module is kindly hosted by Bitbucket, at:
+https://devzendo@bitbucket.org/devzendo/ham-worldmap
+
 =head1 BUGS
 
 Please report any bugs or feature requests to C<bug-ham-worldmap at rt.cpan.org>, or through
