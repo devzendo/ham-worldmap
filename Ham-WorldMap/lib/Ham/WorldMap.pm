@@ -151,7 +151,8 @@ Writes the map image to a file; e.g. "map.png".
 Draw the night regions onto the map, for a given UTC time/date. This is not a fast operation; it's computationally
 heavy.
 
-=head2 createNightRegions($self, $dateTime) = $map;
+=head2 createNightRegions($self, $dateTime) = $map
+
 Create an Imager image of the day/night boundary, for a given UTC time/date. Does not modify current map image, gives
 back a new one that can be composed transparently onto the main image (you may just want to use drawNightRegions -
 this is a bit 'internal').
