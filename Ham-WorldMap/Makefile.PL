@@ -30,6 +30,16 @@ WriteMakefile(
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES => 'Ham-WorldMap-*' },
+    META_MERGE => {
+        'meta-spec' => { version => 2 },
+        resources => {
+            repository => {
+                type => 'hg',
+                url  => 'https://bitbucket.org/devzendo/ham-worldmap',
+                web  => 'https://bitbucket.org/devzendo/ham-worldmap',
+            },
+        },
+    },
 );
 
 package MY;
